@@ -112,7 +112,7 @@ abstract class UserDao
     {
         try {
             self::$conn = Database::getInstance();
-            $sql = 'UPDATE users SET name = :name, email = :email, password = :password, address = :address WHERE id = :id';
+            $sql = 'UPDATE ' . self::$table . ' SET name = :name, email = :email, password = :password, address = :address WHERE id = :id';
             $stmt = self::$conn->prepare($sql);
             $stmt->bindValue(':name', $user->getName());
             $stmt->bindValue(':email', $user->getEmail());
@@ -133,7 +133,7 @@ abstract class UserDao
     {
         try {
             self::$conn = Database::getInstance();
-            $sql = 'DELETE FROM users WHERE id = :id';
+            $sql = 'DELETE FROM ' . self::$table . ' WHERE id = :id';
             $stmt = self::$conn->prepare($sql);
             $stmt->bindValue(':id', $id);
 
