@@ -4,6 +4,7 @@ namespace Api\Dao;
 
 use Api\Database\Database;
 use Api\Models\User;
+use Exception;
 
 abstract class UserDao
 {
@@ -63,7 +64,7 @@ abstract class UserDao
         return $data;
     }
 
-    public static function get(int $id)
+    public static function get(int $id): ?user
     {   
         
         $user = null;
@@ -92,6 +93,55 @@ abstract class UserDao
 
         return $user;
 
+    }
+
+    public static function add(User $user): bool
+    {
+        self::$conn = Database::getInstance();
+        $sql = 'INSERT INTO ' . self::$table . ' (`name`, email, `password`, `address`) VALUES(:name, :email, :password, :address)';
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bindValue(':name', $user->getName());
+        $stmt->bindValue(':email', $user->getEmail());
+        $stmt->bindValue(':password', $user->getPassword());
+        $stmt->bindValue(':address', $user->getAddress()->getId());
+
+        return $stmt->execute();
+    }
+
+    public static function update(User $user): bool
+    {
+        try {
+            self::$conn = Database::getInstance();
+            $sql = 'UPDATE users SET name = :name, email = :email, password = :password, address = :address WHERE id = :id';
+            $stmt = self::$conn->prepare($sql);
+            $stmt->bindValue(':name', $user->getName());
+            $stmt->bindValue(':email', $user->getEmail());
+            $stmt->bindValue(':password', $user->getPassword());
+            $stmt->bindValue(':address', $user->getAddress()->getId());
+            $stmt->bindValue(':id', $user->getId());
+
+            return $stmt->execute();
+        } catch(Exception $e) {
+            http_response_code(500);
+            throw new Exception('Server Error');
+        }
+        
+
+    }
+
+    public static function delete(int $id): bool
+    {
+        try {
+            self::$conn = Database::getInstance();
+            $sql = 'DELETE FROM users WHERE id = :id';
+            $stmt = self::$conn->prepare($sql);
+            $stmt->bindValue(':id', $id);
+
+            return $stmt->execute();
+        } catch(Exception $e) {
+            http_response_code(500);
+            throw new Exception('Server Error');
+        }
     }
 
 }
