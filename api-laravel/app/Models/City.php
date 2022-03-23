@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class City extends Model
 {
     protected $timestamps = false;
-    protected $table = 'cities';
+    public $table = 'cities';
 }

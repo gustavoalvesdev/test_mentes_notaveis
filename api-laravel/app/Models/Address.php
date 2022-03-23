@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Address extends Model
 {
-    protected $timestamps = false;
+    public $timestamps = false;
     protected $table = 'addresses';
 }

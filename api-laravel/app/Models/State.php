@@ -8,5 +8,5 @@ use Illuminate\Database\Eloquent\Model;
 class State extends Model
 {
     protected $timestamps = false;
-    protected $table = 'states';
+    public $table = 'states';
 }
