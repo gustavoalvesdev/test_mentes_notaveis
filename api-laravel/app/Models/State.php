@@ -7,6 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class State extends Model
 {
-    protected $timestamps = false;
-    public $table = 'states';
+    public $timestamps = false;
+    protected $table = 'states';
 }
