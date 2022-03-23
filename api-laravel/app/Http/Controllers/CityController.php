@@ -45,11 +45,12 @@ class CityController extends Controller
                 'state' => $state->name
             ];
             return response()->json($array, 200);
-        } else {
-            $array['status'] = 'error';
-            $array['data'] = 'City Not Found';
-            return response()->json($array, 404);
         }
+
+        $array['status'] = 'error';
+        $array['data'] = 'City Not Found';
+        return response()->json($array, 404);
+
 
     }
 }

@@ -30,11 +30,11 @@ class StateController extends Controller
 
             return response()->json($array, 200);
 
-        } else {
-            $array['status'] = 'error';
-            $array['data'] = 'State Not Found';
-            return response()->json($array, 404);
         }
+        $array['status'] = 'error';
+        $array['data'] = 'State Not Found';
+        return response()->json($array, 404);
+
 
     }
 }
