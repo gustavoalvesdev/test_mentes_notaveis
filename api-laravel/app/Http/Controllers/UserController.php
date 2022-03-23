@@ -11,6 +11,53 @@ use Illuminate\Support\Facades\Validator;
 
 class UserController extends Controller
 {
+
+    public function add(Request $request)
+    {
+        $array = [];
+
+        $rules = [
+            'name' => 'required|min:2',
+            'email' => 'required|email',
+            'password' => 'required|min:3',
+            'address' => 'required|integer'
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $array['status'] = 'error';
+            $array['data'] = $validator->getMessageBag();
+            return response()->json($array, 422);
+        }
+
+        $name = $request->input('name');
+        $email = $request->input('email');
+        $password = $request->input('password');
+        $address = $request->input('address');
+        $address = Address::find($address);
+
+        if (!$address) {
+
+            $array['status'] = 'error';
+            $array['data'] = 'Address Not Found';
+            return response()->json($array, 404);
+        }
+
+        $user = new User();
+        $user->name = $name;
+        $user->email = $email;
+        $user->password = $password;
+        $user->address = $address->id;
+
+        $user->save();
+
+        $array['status'] = 'success';
+        $array['data'] = 'User inserted successfully';
+        return response()->json($array, 200);
+
+    }
+
     public function all()
     {
         $array = [];
@@ -148,5 +195,25 @@ class UserController extends Controller
         $array['data'] = 'User ' . $id . ' Not Found, thus it can\'t be updated';
 
         return response()->json($array, 404);
+    }
+
+    public function delete($id)
+    {
+        $array = [];
+        $user = User::find($id);
+
+        if ($user) {
+
+            $user->delete();
+            $array['status'] = 'success';
+            $array['data'] = 'User ' . $id . ' deleted successfully.';
+
+            return response()->json($array, 200);
+        }
+
+        $array['status'] = 'error';
+        $array['data'] = 'User ' . $id . ' Not Found, thus can\'t be deleted.';
+        return response()->json($array, 404);
+
     }
 }
