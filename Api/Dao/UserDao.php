@@ -99,12 +99,23 @@ abstract class UserDao
     public static function getByCity(int $cityId): int
     {
         self::$conn = Database::getInstance();
-        $sql = "SELECT COUNT(users.id) AS total_usuarios_por_cidade FROM ((users INNER JOIN addresses ON users.address = addresses.id) INNER JOIN cities ON addresses.city = cities.id) WHERE cities.id = :cityId;";
+        $sql = "SELECT COUNT(users.id) AS total_users_by_city FROM ((users INNER JOIN addresses ON users.address = addresses.id) INNER JOIN cities ON addresses.city = cities.id) WHERE cities.id = :cityId;";
         $stmt = self::$conn->prepare($sql);
         $stmt->bindValue(':cityId', $cityId);
         $stmt->execute();
 
-        return intval($stmt->fetch()['total_usuarios_por_cidade']);
+        return intval($stmt->fetch()['total_users_by_city']);
+    }
+
+    public static function getByState(int $stateId): int
+    {
+        self::$conn = Database::getInstance();
+        $sql = "SELECT COUNT(users.id) AS total_users_by_state FROM (((users INNER JOIN addresses ON users.address = addresses.id) INNER JOIN cities ON addresses.city = cities.id) INNER JOIN states ON cities.state = states.id) WHERE states.id = :stateId;";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bindValue(':stateId', $stateId);
+        $stmt->execute();
+
+        return intval($stmt->fetch()['total_users_by_state']);
     }
 
     public static function add(User $user): bool
