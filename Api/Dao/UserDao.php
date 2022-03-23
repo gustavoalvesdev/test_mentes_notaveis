@@ -3,6 +3,7 @@
 namespace Api\Dao;
 
 use Api\Database\Database;
+use Api\Models\City;
 use Api\Models\User;
 use Exception;
 
@@ -93,6 +94,17 @@ abstract class UserDao
 
         return $user;
 
+    }
+
+    public static function getByCity(int $cityId): int
+    {
+        self::$conn = Database::getInstance();
+        $sql = "SELECT COUNT(users.id) AS total_usuarios_por_cidade FROM ((users INNER JOIN addresses ON users.address = addresses.id) INNER JOIN cities ON addresses.city = cities.id) WHERE cities.id = :cityId;";
+        $stmt = self::$conn->prepare($sql);
+        $stmt->bindValue(':cityId', $cityId);
+        $stmt->execute();
+
+        return intval($stmt->fetch()['total_usuarios_por_cidade']);
     }
 
     public static function add(User $user): bool

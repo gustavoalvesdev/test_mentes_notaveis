@@ -23,6 +23,7 @@ class CitiesService
                 ];
 
             } else {
+                http_response_code(404);
                 throw new \Exception('City Not Found');
                 exit;
             }
