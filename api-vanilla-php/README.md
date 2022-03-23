@@ -24,4 +24,14 @@ MÉTODO | ENDPOINT | DESCRIÇÃO
 ------------|-----|------------
 GET | /users | Lista todos os usuários
 GET | /users/{id} | Lista um usuário por id
+GET | /userspercity/{cityId} | Lista o total de usuários por cidade, através do id da cidade passado por parâmetro
+GET | /usersperstate/{stateId} | Lista o total de usuários por estado, através do id do estado passado por parâmetro
 POST | /users | Insere um usuário. É necessário passar os parâmetros: <b>name</b>, <b>address</b> (<i>id do endereco</i>), <b>email</b> e <b>password</b>
+PUT | /users/{id} | Atualiza dados de um usuário. Devem ser passados os mesmos parâmetros do POST, além do ID do usuário
+DELETE | /users/{id} | Exclui um usuário. 
+GET | /states | Lista todos os estados cadastrados
+GET | /states/{id} | Lista um estado por id
+GET | /cities | Lista todas as cidades cadastradas
+GET | /cities/{id} | Lista uma cidade por id
+GET | /addresses | Lista todos os endereços cadastrados
+GET | /address/{id} | Lista um endereço por id
